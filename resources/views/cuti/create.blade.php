@@ -160,8 +160,8 @@
             }
 
             if($(this).val() == '2'){
-                $('#status').val('Diterima');
-            } else {
+            //     $('#status').val('Diterima');
+            // } else {
                 $('#status').val('Pengajuan');
             }
         });

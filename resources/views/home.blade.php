@@ -376,9 +376,9 @@
                         customClass: {
                             confirmButton: 'btn btn-success',
                         },
-                        title: 'Success',
-                        text: "Update Status Cuti Berhasil",
-                        icon: 'success',
+                        title: 'Errors',
+                        text: "Gagal update status",
+                        icon: 'error',
                         confirmButtonText: 'OK'
                     }).then((hasil) => {
                         location.reload();
@@ -388,9 +388,9 @@
                         customClass: {
                             confirmButton: 'btn btn-success',
                         },
-                        title: 'Errors',
-                        text: "Gagal update status",
-                        icon: 'error',
+                        title: 'Success',
+                        text: "Update Status Cuti Berhasil",
+                        icon: 'success',
                         confirmButtonText: 'OK'
                     }).then((hasil) => {
                         location.reload();

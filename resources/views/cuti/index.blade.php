@@ -46,7 +46,7 @@
                                         @endif
 
                                         @if ($item->tgl_akhir_cuti > now() || $item->kategori != null)
-                                        @if ($item->status != '1')
+                                        @if ($item->status != '0')
                                         <a class="btn btn-danger btn-sm my-2 delete-confirm" data-id="{{$item->id}}"> <i class="fas fa-trash"></i>
                                             Delete </a>
                                         @endif

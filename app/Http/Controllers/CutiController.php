@@ -243,8 +243,8 @@ class CutiController extends Controller
 
         // jika cuti sakit cuti otomatis diterima
         if ($request->kategori == Cuti::CUTI_SAKIT) {
-            $cuti->status = Cuti::DITERIMA;
-            $cuti->acc_kepala = Cuti::KEPALA_SUDAH;
+            $cuti->status = Cuti::PENGAJUAN;
+            $cuti->acc_kepala = Cuti::KEPALA_BELUM;
             if ($request->file('surat_pendukung') == null) {
                 $jumlah_cuti = $this->countCutiDays($request->get('tgl_awal_cuti'), $request->get('tgl_akhir_cuti'));
                 if ($pegawai->jum_cuti > $jumlah_cuti) {
@@ -253,7 +253,7 @@ class CutiController extends Controller
                 }
             }
         } else {
-            $cuti->status = Cuti::PENGAJUAN;
+            $cuti->status = Cuti::DITERIMA;
         }
 
 

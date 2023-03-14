@@ -81,9 +81,11 @@
                                         </button>
                                         @endif
                                         @endif
+                                        @if ($item->status != '0')
                                         <a class="btn btn-danger btn-sm my-2 delete-confirm" data-id="{{$item->id}}"> <i
                                                 class="fas fa-trash"></i>
                                             Delete </a>
+                                        @endif
                                         @endif
                                     </td>
                                     @endif
@@ -193,9 +195,9 @@
                     customClass: {
                         confirmButton: 'btn btn-success',
                     },
-                    title: 'Success',
-                    text: "Update Status Cuti Berhasil",
-                    icon: 'success',
+                    title: 'Errors',
+                    text: "Gagal update status",
+                    icon: 'error', 
                     confirmButtonText: 'OK'
                 }).then((hasil) => {
                     location.reload();
@@ -205,9 +207,9 @@
                     customClass: {
                         confirmButton: 'btn btn-success',
                     },
-                    title: 'Errors',
-                    text: "Gagal update status",
-                    icon: 'error',
+                    title: 'Success',
+                    text: "Update Status Cuti Berhasil",
+                    icon: 'success',
                     confirmButtonText: 'OK'
                 }).then((hasil) => {
                     location.reload();
