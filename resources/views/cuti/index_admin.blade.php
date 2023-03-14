@@ -81,7 +81,7 @@
                                         </button>
                                         @endif
                                         @endif
-                                        @if ($item->status != '0')
+                                        @if ($item->status == '0')
                                         <a class="btn btn-danger btn-sm my-2 delete-confirm" data-id="{{$item->id}}"> <i
                                                 class="fas fa-trash"></i>
                                             Delete </a>
