@@ -64,6 +64,36 @@
                                             <i class="fas fa-eye"></i> Show </a>
                                         @endif
 
+                                        <!-- tambahan lagi -->
+                                        @if ($item->kategori == 2)
+                                        @if ($item->status == '1' && $item->acc_kepala == 1)
+                                        @if ($item->status == '1')
+                                        <a class="btn btn-primary btn-sm my-2" href="/cuti/{{ $item->id }}/edit"> <i
+                                                class="fas fa-pen"></i> Validasi </a>
+                                        @endif
+                                        @endif
+                                        @endif
+
+                                        <!-- tambahan euy -->
+                                        @if ($item->status != 1 || $item->tgl_akhir_cuti > now() || $item->kategori == 2)
+                                        @if (Auth::user()->role == '2')
+                                        @if (Auth::user()->id == 7 && $item->status == '0')
+                                        <button type="button" class="btn btn-primary btn-sm my-2 validasi"
+                                            data-id="{{$item->id}}" data-bs-toggle="modal"
+                                            data-bs-target="#validasiModal">
+                                            <i class="fas fa-pen"></i> Validasi
+                                        </button>
+                                        @endif
+
+                                        @if (Auth::user()->id != 7 && $item->acc_kepala == 0)
+                                        <button type="button" class="btn btn-primary btn-sm my-2 validasi"
+                                            data-id="{{$item->id}}" data-bs-toggle="modal"
+                                            data-bs-target="#validasiModal">
+                                            <i class="fas fa-pen"></i> validasi
+                                        </button>
+                                        @endif
+                                        @endif
+
                                         @if ($item->status != 1 || $item->tgl_akhir_cuti > now() || $item->kategori == null)
                                         @if (Auth::user()->role == '2')
                                         @if (Auth::user()->id == 7 && $item->status == '0')
@@ -85,6 +115,7 @@
                                         <a class="btn btn-danger btn-sm my-2 delete-confirm" data-id="{{$item->id}}"> <i
                                                 class="fas fa-trash"></i>
                                             Delete </a>
+                                        @endif
                                         @endif
                                         @endif
                                     </td>
@@ -116,6 +147,35 @@
                             <option value="" selected disabled>Pilih Status</option>
                             <option value="1">Diterima</option>
                             <option value="2">Ditolak</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- nambah euy -->
+<div class="modal fade" id="validasiModal" tabindex="-1" aria-labelledby="validasiModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Validasi Cuti Sakit</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="validasiForm" method="POST" enctype="multipart/form-data">
+                @csrf
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="validasi" class="required col-form-label">Validasi</label>
+                        <select name="validasi" id="validasi" class="form-control" required>
+                            <option value="" selected disabled>Pilih Validasi</option>
+                            <option value="1">Yes</option>
+                            <option value="2">No</option>
                         </select>
                     </div>
                 </div>
@@ -217,7 +277,103 @@
             }        
         });
     });
+    $(function () {
+      $('#example').DataTable({
+        "paging": true,
+        "lengthChange": false,
+        "searching": true,
+        "ordering": true,
+        "info": false,
+        "autoWidth": false,
+        "responsive": true,
+      });
+    });
+</script>
+<script type="text/javascript">
+    $(document).on('click', '.delete-confirm', function (e) {
+        var id = $(this).data('id');
+        var route = "{{ route('cuti.destroy', ':id') }}";
+        route = route.replace(':id', id);
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+            if (result.isConfirmed) {
+                e.preventDefault();
+                $.ajax({
+                    type: "DELETE",
+                    url: route,
+                    data: {
+                        "_token": "{{ csrf_token() }}",
+                        "id": id
+                    },
+                    success: function (data) {
+                            
+                    }         
+                });
+                $(document).ajaxStop(function(){
+                    location.reload();
+                });
+            }
+        });
+    });
+    var id_cuti = null;
+    $(document).on('click', '.validasi', function(e){
+        e.preventDefault();
+        id_cuti = $(this).data('id');
+    });
 
+    $('#validasiForm').submit(function(e) {
+        e.preventDefault();
+        
+        var dataForm = new FormData(this);
+        dataForm.append('id', id_cuti);
+        console.log(dataForm);
+
+        var url = "{{ Route::is('cuti.admin.index') ? route('cuti.admin.validasi') : route('cuti.kepala.validasi') }}";
+        console.log(url);
+        $.ajax({
+            type: "POST",
+            url: url,
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            data: dataForm,
+            dataType: 'JSON',
+            contentType: false,
+            cache: false,
+            processData: false,
+            success: function(response) {
+                Swal.fire({
+                    customClass: {
+                        confirmButton: 'btn btn-success',
+                    },
+                    title: 'Errors',
+                    text: "Gagal Validasi",
+                    icon: 'error', 
+                    confirmButtonText: 'OK'
+                }).then((hasil) => {
+                    location.reload();
+                });
+            }, error: function(response) {
+                Swal.fire({
+                    customClass: {
+                        confirmButton: 'btn btn-success',
+                    },
+                    title: 'Success',
+                    text: "Validasi Success",
+                    icon: 'success',
+                    confirmButtonText: 'OK'
+                }).then((hasil) => {
+                    location.reload();
+                });
+            }        
+        });
+    });
     $(function () {
       $('#example').DataTable({
         "paging": true,

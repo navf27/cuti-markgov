@@ -135,7 +135,8 @@
                         <div class="text-start ml-5 mb-3">Sudah diambil</div>
                     </td>
                     <td>
-                        <div class="text-start ml-5 mb-3">: {{$pengajuan->kategori == 1 || $pengajuan->kategori == null ? $pengajuan->lama_cuti : '-'}}</div>
+                    <!-- {{$pengajuan->kategori == 1 || $pengajuan->kategori == null ? $pengajuan->lama_cuti : '-'}} -->
+                        <div class="text-start ml-5 mb-3">:{{$pengajuan->lama_cuti}}</div>
                     </td>
                     <td>
                         <div class="text-start ml-5 mb-3"> hari</div>
@@ -146,7 +147,8 @@
                         <div class="text-start ml-5 mb-3">Sisa Cuti</div>
                     </td>
                     <td>
-                        <div class="text-start ml-5 mb-3">: {{$pengajuan->sisa_cuti_min}}</div>
+                    <!-- {{$pengajuan->sisa_cuti_min}} ganti -->
+                        <div class="text-start ml-5 mb-3">: {{$pengajuan->sisa_cuti - $pengajuan->lama_cuti}}</div>
                     </td>
                     <td>
                         <div class="text-start ml-5 mb-3"> hari</div>

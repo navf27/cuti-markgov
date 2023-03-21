@@ -159,10 +159,10 @@
                                                 @if ($item->status != 1 || $item->tgl_akhir_cuti > now() ||
                                                 $item->kategori == null)
                                                 @if (Auth::user()->role == '2')
-                                                <button type="button" class="btn btn-primary btn-sm my-2 updateStatus"
+                                                <button type="button" class="btn btn-primary btn-sm my-2 validasi"
                                                     data-id="{{$item->id}}" data-bs-toggle="modal"
-                                                    data-bs-target="#updateStatusModal">
-                                                    <i class="fas fa-pen"></i> Update Status
+                                                    data-bs-target="#validasiModal">
+                                                    <i class="fas fa-pen"></i> Validasi
                                                 </button>
                                                 @endif
                                                 <a class="btn btn-danger btn-sm my-2 delete-confirm"
@@ -280,35 +280,6 @@
     </div>
     @endif
 </div>
-<div class="modal fade" id="updateStatusModal" tabindex="-1" aria-labelledby="updateStatusModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Update Status Cuti</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <form id="updateStatusForm" method="POST" enctype="multipart/form-data">
-                @csrf
-                <div class="modal-body">
-                    <div class="mb-3">
-                        <label for="status" class="required col-form-label">Status</label>
-                        <select name="status" id="status" class="form-control" required>
-                            <option value="" selected disabled>Pilih Status</option>
-                            <option value="1">Diterima</option>
-                            <option value="2">Ditolak</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Submit</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-<!-- tambahan -->
 <div class="modal fade" id="ValidasiModal" tabindex="-1" aria-labelledby="validasiModalLabel"
     aria-hidden="true">
     <div class="modal-dialog">
@@ -374,94 +345,6 @@
         });
     
         // get id cuti on click button
-        var id_cuti = null;
-        $(document).on('click', '.updateStatus', function(e){
-            e.preventDefault();
-            id_cuti = $(this).data('id');
-        });
-    
-        $('#updateStatusForm').submit(function(e) {
-            e.preventDefault();
-            
-            var dataForm = new FormData(this);
-            dataForm.append('id', id_cuti);
-            console.log(dataForm);
-    
-            var url = "{{ Route::is('cuti.admin.index') ? route('cuti.admin.updateStatus') : route('cuti.kepala.updateStatus') }}";
-            console.log(url);
-            $.ajax({
-                type: "POST",
-                url: url,
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
-                data: dataForm,
-                dataType: 'JSON',
-                contentType: false,
-                cache: false,
-                processData: false,
-                success: function(response) {
-                    Swal.fire({
-                        customClass: {
-                            confirmButton: 'btn btn-success',
-                        },
-                        title: 'Errors',
-                        text: "Gagal update status",
-                        icon: 'error', 
-                        confirmButtonText: 'OK'
-                    }).then((hasil) => {
-                        location.reload();
-                    });
-                }, error: function(response) {
-                    Swal.fire({
-                        customClass: {
-                            confirmButton: 'btn btn-success',
-                        },
-                        title: 'Success',
-                        text: "Update Status Cuti Berhasil",
-                        icon: 'success',
-                        confirmButtonText: 'OK'
-                    }).then((hasil) => {
-                        location.reload();
-                    });
-                }        
-            });
-        });
-</script>
-// lagi lagi nambah
-<script type="text/javascript">
-    $(document).on('click', '.delete-confirm', function (e) {
-            var id = $(this).data('id');
-            var route = "{{ route('cuti.destroy', ':id') }}";
-            route = route.replace(':id', id);
-            Swal.fire({
-                title: 'Are you sure?',
-                text: "You won't be able to revert this!",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#d33',
-                confirmButtonText: 'Yes, delete it!'
-                }).then((result) => {
-                if (result.isConfirmed) {
-                    e.preventDefault();
-                    $.ajax({
-                        type: "DELETE",
-                        url: route,
-                        data: {
-                            "_token": "{{ csrf_token() }}",
-                            "id": id
-                        },
-                        success: function (data) {
-                                
-                        }         
-                    });
-                    $(document).ajaxStop(function(){
-                        location.reload();
-                    });
-                }
-            });
-        });
-
         var id_cuti = null;
         $(document).on('click', '.validasi', function(e){
             e.preventDefault();

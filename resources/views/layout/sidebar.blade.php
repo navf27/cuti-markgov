@@ -1,8 +1,15 @@
 <header class="main-nav">
     <div class="sidebar-user text-center">
-        <a class="setting-primary" href="javascript:void(0)" data-bs-toggle="modal"
+        <!-- <a class="setting-primary" href="javascript:void(0)" data-bs-toggle="modal"
         data-bs-target="#changeAvatarModal"><i data-feather="settings"></i></a><img
             class="img-90 rounded-circle" src="{{ $pegawai_data->user->avatar }}"
+            alt="" /> -->
+
+         <a class="setting-primary" href="javascript:void(0)" data-bs-toggle="modal"
+        data-bs-target="#changeBiodataModal"><i data-feather="settings"></i></a>
+         <!-- tambahan nich -->
+        <img
+            class="img-90 rounded-circle" data-bs-toggle="modal" data-bs-target="#changeAvatarModal" src="{{ $pegawai_data->user->avatar }}"
             alt="" />
         {{-- <div class="badge-bottom"><span class="badge badge-primary">New</span></div> --}}
         <a href="javascript:void(0)">
