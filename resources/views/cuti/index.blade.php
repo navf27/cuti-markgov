@@ -39,12 +39,29 @@
                                         @if ($item->kategori != 4)
                                         <a class="btn btn-warning btn-sm my-2" href="/pengajuan/cetak/{{ $item->id }}" target="_blank"> <i
                                             class="fas fa-file"></i> Cetak Pengajuan </a>
-
-                                        @if ($item->status != '1' && $item->acc_kepala != 1)
+                                        <!-- ganti -->
+                                        @if ($item->status == '1' && $item->acc_kepala == 1)
+                                        @if ($item->status == '1')
                                         <a class="btn btn-primary btn-sm my-2" href="/cuti/{{ $item->id }}/edit"> <i
                                                 class="fas fa-pen"></i> Edit </a>
                                         @endif
+                                        @endif
+                                        
+                                        <!-- tambahan -->
+                                        @if ($item->status == '0' && $item->acc_kepala == 0)
+                                        @if ($item->status == '0')
+                                        <a class="btn btn-primary btn-sm my-2" href="/cuti/{{ $item->id }}/edit"> <i
+                                                class="fas fa-pen"></i> Edit </a>
+                                        @endif
+                                        @endif
 
+                                        @if ($item->status == '0' && $item->acc_kepala == 0)
+                                        @if ($item->status == '0')
+                                        <a class="btn btn-primary btn-sm my-2" href="/cuti/{{ $item->id }}/validasi"> <i
+                                                class="fas fa-pen"></i> Validasi</a>
+                                        @endif
+                                        @endif
+                                        
                                         @if ($item->tgl_akhir_cuti > now() || $item->kategori != null)
                                         @if ($item->status == '0')
                                         <a class="btn btn-danger btn-sm my-2 delete-confirm" data-id="{{$item->id}}"> <i class="fas fa-trash"></i>

@@ -32,6 +32,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('password', [PasswordController::class, 'edit'])->name('user.password.edit');
     Route::patch('password', [PasswordController::class, 'update'])->name('user.password.update');
     Route::post('/changeAvatar', [HomeController::class, 'changeAvatar'])->name('user.avatar.change');
+    Route::post('/changeBiodata', [HomeController::class, 'changeBiodata'])->name('user.biodata.change');
 
     // role admin
     Route::middleware(['admin'])->group(function () {
@@ -53,6 +54,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/cuti/admin', [CutiController::class, 'indexAdmin'])->name('cuti.admin.index');
         Route::get('/cuti/admin/show/{id}', [CutiController::class, 'show'])->name('cuti.admin.show');
         Route::post('/cuti/admin/updateStatus', [CutiController::class, 'updateStatus'])->name('cuti.admin.updateStatus');
+        Route::post('/cuti/admin/validasi', [CutiController::class, 'validasi'])->name('cuti.admin.validasi');
 
         // fingerprint
         Route::get('/cuti/admin/fingerprint', [FingerprintController::class, 'checkFingerprint'])->name('cuti.admin.fingerprint');
@@ -77,6 +79,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/cuti/kepala', [CutiController::class, 'indexKepala'])->name('cuti.kepala.index');
         Route::get('/cuti/kepala/show/{id}', [CutiController::class, 'show'])->name('cuti.kepala.show');
         Route::post('/cuti/kepala/updateStatus', [CutiController::class, 'updateStatus'])->name('cuti.kepala.updateStatus');
+        Route::post('/cuti/kepala/validasi', [CutiController::class, 'validasi'])->name('cuti.kepala.validasi');
         //daily report
         Route::get('/daily/report', [DailyReportController::class, 'DailyReport'])->name('daily.report');
     });
@@ -107,6 +110,8 @@ Route::middleware(['auth'])->group(function () {
 });
 
 Route::get('/updateStatusEmail', [CutiController::class, 'updateStatusEmail'])->name('updateStatusEmail');
+
+Route::get('/validasiEmail', [CutiController::class, 'validasiEmail'])->name('validasiEmail');
 
 Route::get('/importExcel', [PegawaiController::class, 'importExcel']);
 

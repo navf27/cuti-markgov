@@ -16,6 +16,10 @@ class Cuti extends Model
     const DITERIMA  = '1';
     const DITOLAK   = '2';
 
+    // validasi
+    const Yes  = '1';
+    const No   = '2';
+
     // kategori
     const CUTI_TAHUNAN      = 1;
     const CUTI_SAKIT        = 2;
