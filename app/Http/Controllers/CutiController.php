@@ -80,6 +80,10 @@ class CutiController extends Controller
             if ($cuti->kategori == Cuti::CUTI_TAHUNAN) {
                 $pegawai->save();
             }
+            if ($cuti->kategori == Cuti::CUTI_SAKIT) {
+                // $pegawai->save();
+                dd($cuti);
+            }
             $cuti->status = $request->status;
             $cuti->save();
 
@@ -119,7 +123,7 @@ class CutiController extends Controller
         $pegawai = Pegawai::find($cuti->id_pegawai);
 
         if ($request->user_acc_id == 7) {
-            if($cuti->status != Cuti::PENGAJUAN){
+            if ($cuti->status != Cuti::PENGAJUAN) {
                 return redirect()->route('errorEmail');
             }
             $jumlah_cuti = $this->countCutiDays($cuti->tgl_awal_cuti, $cuti->tgl_akhir_cuti);
@@ -149,7 +153,7 @@ class CutiController extends Controller
             // kirim email notifikasi ke pegawai
             Mail::to($pegawai->user->email)->send(new EmailPegawai($cuti));
         } else {
-            if($cuti->acc_kepala != Cuti::KEPALA_BELUM){
+            if ($cuti->acc_kepala != Cuti::KEPALA_BELUM) {
                 return redirect()->route('errorEmail');
             }
             $cuti->acc_kepala = $request->status;
@@ -319,6 +323,7 @@ class CutiController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+
     public function update(Request $request, $id)
     {
         $request->validate([
@@ -399,6 +404,26 @@ class CutiController extends Controller
         $pdf = Pdf::loadView('cuti.pengajuan_pdf', compact('pengajuan'));
         return $pdf->download($nama_file);
         // return view('cuti.pengajuan_pdf', compact('pengajuan'));
+    }
+    //baru ditambah
+    public function cetakPengajuanSakit($id)
+    {
+        $pengajuansakit = Cuti::find($id);
+        $pengajuansakit->lama_cuti = $this->countCutiDays($pengajuansakit->tgl_awal_cuti, $pengajuansakit->tgl_akhir_cuti);
+        $pengajuansakit->sisa_cuti_min = $pengajuansakit->kategori == 1 || $pengajuansakit->kategori == null ? $pengajuansakit->sisa_cuti->lama_cuti : $pengajuansakit->sisa_cuti;
+        $tgl_dibuat = strtotime($pengajuansakit->created_at);
+        $pengajuansakit->tgl_dibuat = Carbon::parse($tgl_dibuat)->locale('id')->isoFormat('D MMMM Y');
+
+        $pengaju = $pengajuansakit->pegawai->nama_pegawai . ", " . $pengajuansakit->pegawai->divisi->nama_divisi;
+        $kepala = $pengajuansakit->pegawai->divisi->nama_kepala . ", Manajer " . $pengajuansakit->pegawai->divisi->nama_divisi;
+        $direktur = config('app.nama_direktur') . ", Direktur Scomptec";
+        $pengajuansakit->qr_pengaju = base64_encode(QrCode::format('svg')->size(80)->errorCorrection('H')->generate($pengaju));
+        $pengajuansakit->qr_kepala = base64_encode(QrCode::format('svg')->size(80)->errorCorrection('H')->generate($kepala));
+        $pengajuansakit->qr_direktur = base64_encode(QrCode::format('svg')->size(80)->errorCorrection('H')->generate($direktur));
+        $nama_file = "Pengajuan_cuti_sakit_" . $pengajuansakit->pegawai->nama_depan . "_" . $pengajuansakit->pegawai->nama_belakang . ".pdf";
+        $pdf = Pdf::loadView('cuti.pengajuansakit_pdf', compact('pengajuansakit'));
+        return $pdf->download($nama_file);
+        // return view('cuti.pengajuansakit_pdf', compact('pengajuan'));
     }
 
     public function createFingerprint()

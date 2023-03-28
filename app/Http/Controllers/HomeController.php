@@ -82,7 +82,7 @@ class HomeController extends Controller
                     $cuti->menyetujui       = $value->divisi->nama_kepala;
                     $cuti->created_by       = Auth::user()->id;
                     $cuti->save();
-                    
+
                     $value->jum_cuti = 12;
                     $value->save();
                 }
@@ -95,7 +95,7 @@ class HomeController extends Controller
                 'error' => $th->getMessage()
             ], 500);
         }
-        
+
         $user = Auth::user();
         $pegawai = Pegawai::where('id_user', $user->id)->first();
         $tgl_sekarang = strtotime(now());
@@ -139,7 +139,7 @@ class HomeController extends Controller
             $notifikasi = Cuti::where('id_pegawai', $pegawai->id)->whereYear('tgl_awal_cuti', $tahun)->whereMonth('tgl_awal_cuti', $bulan)->orderBy('id', 'desc')->get();
         }
 
-        return view('home', compact('jumlah_cuti', 'jumlah_pengajuan', 'jumlah_diterima', 'jumlah_ditolak','jumlah_pegawai' ,'notifikasi'));
+        return view('home', compact('jumlah_cuti', 'jumlah_pengajuan', 'jumlah_diterima', 'jumlah_ditolak', 'jumlah_pegawai', 'notifikasi'));
     }
 
     public function changeMode(Request $request)
@@ -162,7 +162,7 @@ class HomeController extends Controller
             ], 500);
         }
     }
-
+    //kayaknya biodata database disini
     public function changeAvatar(Request $request)
     {
         DB::beginTransaction();
@@ -175,7 +175,7 @@ class HomeController extends Controller
             if ($request->file('avatar')) {
                 $user->photo = $this->getPathFile($request->file('avatar'), 'avatar');
             }
-            if ($request->name){
+            if ($request->name) {
                 $user->name = $request->name;
             }
             $user->save();
@@ -190,6 +190,83 @@ class HomeController extends Controller
                 'status' => '500',
                 'error' => $err->getMessage()
             ], 500);
+        }
+    }
+
+    public function changeBiodata(Request $request)
+    {
+        // dd($request->all());
+        // DB::beginTransaction();
+        try {
+            // $user = User::find($id);
+            $user = User::find(Auth::user()->id);
+
+            // dd($user);
+            $pegawai = Pegawai::firstWhere('id_user', Auth::user()->id);
+
+            if ($request->no_hp) {
+                $pegawai->no_hp = $request->no_hp;
+            }
+
+            if ($request->tgl_lahir) {
+                $pegawai->tgl_lahir = $request->tgl_lahir;
+            }
+
+            if ($request->jenis_kelamin) {
+                $pegawai->jenis_kelamin = $request->jenis_kelamin;
+            }
+
+            if ($request->nama_depan) {
+                $pegawai->nama_depan = $request->nama_depan;
+            }
+
+            if ($request->nama_belakang) {
+                $pegawai->nama_belakang = $request->nama_belakang;
+            }
+
+            if ($request->alamat) {
+                $pegawai->alamat = $request->alamat;
+            }
+
+            // if ($request->id_provinsi) {
+            //     $pegawai->id_provinsi = $request->id_provinsi;
+            // }
+
+            // if ($request->id_kota) {
+            //     $pegawai->id_kota = $request->id_kota;
+            // }
+
+            // if ($request->id_kecamatan) {
+            //     $pegawai->id_kecamatan = $request->id_kecamatan;
+            // }
+
+            // if ($request->id_desa) {
+            //     $pegawai->id_desa = $request->id_desa;
+            // }
+
+            $pegawai->save();
+
+            // if ($request->email) {
+            //     $user->email = $request->email;
+            // }
+
+            if ($request->nama_depan && $request->nama_belakang != null) {
+                $nama = $request->nama_depan . " " . $request->nama_belakang;
+                $user->name = $nama;
+            } else {
+                $user->name = $request->nama_depan;
+            }
+
+            $user->save();
+
+            return response()->json([
+                'status' => 200,
+                'data' => 'Biodata berhasil diubah'
+            ]);
+            // return redirect()->route('user.profile')->with('sucsess', 'Berhasil Merubah Data');
+        } catch (\Throwable $th) {
+            dd($th);
+            return redirect()->back()->with('error', $th->getMessage());
         }
     }
 }

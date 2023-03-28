@@ -139,7 +139,14 @@
                                                     href="/pengajuan/cetak/{{ $item->id }}" target="_blank"> <i
                                                         class="fas fa-file"></i> Cetak Pengajuan </a>
                                                 @endif
-
+                                                <!-- baru ditambah -->
+                                                @if ($item->validasi == '1' && $item->acc_kepala == 1 && $item->status == '1' )
+                                                @if ($item->kategori == '2')
+                                                <a class="btn btn-warning btn-sm my-2" href="/pengajuansakit/cetak/{{ $item->id }}"
+                                                    target="_blank"> <i class="fas fa-file"></i> Cetak Pengajuan sakit</a>
+                                                @endif
+                                                @endif 
+                                                
                                                 @if ($item->status != 1)
                                                 <a class="btn btn-primary btn-sm my-2"
                                                     href="/cuti/{{ $item->id }}/edit"> <i class="fas fa-pen"></i> Edit

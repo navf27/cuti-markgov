@@ -17,8 +17,8 @@ class Cuti extends Model
     const DITOLAK   = '2';
 
     // validasi
-    const Yes  = '1';
-    const No   = '2';
+    const Ya  = '1';
+    const Tidak  = '2';
 
     // kategori
     const CUTI_TAHUNAN      = 1;
@@ -42,6 +42,7 @@ class Cuti extends Model
         'no_surat',
         'surat_pendukung'.
         'status',
+        // 'validasi',
         'kategori',
         'menyetujui',
         'mengetahui',
@@ -112,6 +113,16 @@ class Cuti extends Model
             return "-";
         }
     }
+    // public function getValidasiAttribute()
+    // {
+    //     if($this->validasi == 1){
+    //         return "Ya";
+    //     } else if($this->validasi == 2){
+    //         return "Tidak";
+    //     } else {
+    //         return "-";
+    //     }
+    // }
 
     public function getLamaCutiAttribute()
     {

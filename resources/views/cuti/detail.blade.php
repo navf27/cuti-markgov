@@ -18,6 +18,7 @@
                             <li class="list-group-item"><b>Keterangan Cuti: </b>{{ $cuti->keterangan }}</li>
                             <li class="list-group-item"><b>Status: </b>{{$cuti->status_cuti}}</li>
                             <li class="list-group-item"><b>Acc Kepala: </b>{{$cuti->status_kepala}}</li>
+                            <li class="list-group-item"><b>Validasi: </b>{{$cuti->validasi}}</li>
                             <li class="list-group-item"><b>Nomor Surat: </b>{{$cuti->no_surat ?? '-'}}</li>
                             <li class="list-group-item"><b>Menyetujui: </b>{{ $cuti->menyetujui }}</li>
                             <li class="list-group-item"><b>Mengetahui: </b>{{ $cuti->mengetahui }}</li>

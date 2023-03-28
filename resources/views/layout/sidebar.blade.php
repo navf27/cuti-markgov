@@ -8,6 +8,7 @@
          <a class="setting-primary" href="javascript:void(0)" data-bs-toggle="modal"
         data-bs-target="#changeBiodataModal"><i data-feather="settings"></i></a>
          <!-- tambahan nich -->
+         
         <img
             class="img-90 rounded-circle" data-bs-toggle="modal" data-bs-target="#changeAvatarModal" src="{{ $pegawai_data->user->avatar }}"
             alt="" />

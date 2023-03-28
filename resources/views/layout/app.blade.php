@@ -87,6 +87,7 @@
         </div>
     </div>
     @include('modal_change_avatar')
+    @include('modal_change_biodata')
     <!-- latest jquery-->
     <script src="{{ asset('viho') }}/assets/js/jquery-3.5.1.min.js"></script>
     <!-- feather icon js-->

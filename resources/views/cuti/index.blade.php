@@ -22,6 +22,7 @@
                                     <th scope="col">Keterangan Cuti</th>
                                     <th scope="col">Status</th>
                                     <th scope="col">Acc Kepala</th>
+                                    <th scope="col">Validasi</th>
                                     <th scope="col" width="250px">Action</th>
                                 </tr>
                             </thead>
@@ -34,11 +35,22 @@
                                     <td>{{ $item->keterangan }}</td>
                                     <td>{{$item->status_cuti}}</td>
                                     <td>{{ $item->status_kepala }}</td>
+                                    <td>{{ $item->validasi }}</td>
                                     @if ($item->id_jadwal_cuti == null)
                                     <td>
                                         @if ($item->kategori != 4)
                                         <a class="btn btn-warning btn-sm my-2" href="/pengajuan/cetak/{{ $item->id }}" target="_blank"> <i
                                             class="fas fa-file"></i> Cetak Pengajuan </a>
+                                        @endif
+                                        <!-- baru ditambah -->
+
+                                        @if ($item->kategori == '2')
+                                        @if ($item->validasi == '1' && $item->acc_kepala == 1 && $item->status == '1' )
+                                        <a class="btn btn-warning btn-sm my-2" href="/pengajuansakit/cetak/{{ $item->id }}"
+                                            target="_blank"> <i class="fas fa-file"></i> Cetak Pengajuan sakit</a>
+                                        @endif 
+                                        @endif 
+
                                         <!-- ganti -->
                                         @if ($item->status == '1' && $item->acc_kepala == 1)
                                         @if ($item->status == '1')
@@ -55,12 +67,6 @@
                                         @endif
                                         @endif
 
-                                        @if ($item->status == '0' && $item->acc_kepala == 0)
-                                        @if ($item->status == '0')
-                                        <a class="btn btn-primary btn-sm my-2" href="/cuti/{{ $item->id }}/validasi"> <i
-                                                class="fas fa-pen"></i> Validasi</a>
-                                        @endif
-                                        @endif
                                         
                                         @if ($item->tgl_akhir_cuti > now() || $item->kategori != null)
                                         @if ($item->status == '0')
@@ -70,7 +76,6 @@
                                         @endif
                                         @endif
                                     </td>
-                                    @endif
                                 </tr>
                                 @endforeach
                             </tbody>

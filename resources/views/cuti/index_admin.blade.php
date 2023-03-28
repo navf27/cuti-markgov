@@ -50,6 +50,11 @@
                                         <a class="btn btn-warning btn-sm my-2" href="/pengajuan/cetak/{{ $item->id }}"
                                             target="_blank"> <i class="fas fa-file"></i> Cetak Pengajuan </a>
                                         @endif
+                                        <!-- baru ditambah -->
+                                        @if ($item->validasi == '1')
+                                        <a class="btn btn-warning btn-sm my-2" href="/pengajuansakit/cetak/{{ $item->id }}"
+                                            target="_blank"> <i class="fas fa-file"></i> Cetak Pengajuan </a>
+                                        @endif
 
                                         {{-- @if ($item->status != 1)
                                         <a class="btn btn-primary btn-sm my-2" href="/cuti/{{ $item->id }}/edit"> <i
@@ -65,16 +70,19 @@
                                         @endif
 
                                         <!-- tambahan lagi -->
+                                        @if (Auth::user()->role == '1')
                                         @if ($item->kategori == 2)
                                         @if ($item->status == '1' && $item->acc_kepala == 1)
-                                        @if ($item->status == '1')
-                                        <a class="btn btn-primary btn-sm my-2" href="/cuti/{{ $item->id }}/edit"> <i
-                                                class="fas fa-pen"></i> Validasi </a>
+                                        <button type="button" class="btn btn-primary btn-sm my-2 validasi"
+                                            data-id="{{$item->id}}" data-bs-toggle="modal"
+                                            data-bs-target="#validasiModal">
+                                            <i class="fas fa-pen"></i> Validasi
+                                        </button>
                                         @endif
                                         @endif
                                         @endif
 
-                                        <!-- tambahan euy -->
+                                        <!-- tambahan euy
                                         @if ($item->status != 1 || $item->tgl_akhir_cuti > now() || $item->kategori == 2)
                                         @if (Auth::user()->role == '2')
                                         @if (Auth::user()->id == 7 && $item->status == '0')
@@ -83,16 +91,16 @@
                                             data-bs-target="#validasiModal">
                                             <i class="fas fa-pen"></i> Validasi
                                         </button>
-                                        @endif
+                                        @endif -->
 
-                                        @if (Auth::user()->id != 7 && $item->acc_kepala == 0)
+                                        <!-- @if (Auth::user()->id != 7 && $item->acc_kepala == 0)
                                         <button type="button" class="btn btn-primary btn-sm my-2 validasi"
                                             data-id="{{$item->id}}" data-bs-toggle="modal"
                                             data-bs-target="#validasiModal">
                                             <i class="fas fa-pen"></i> validasi
                                         </button>
                                         @endif
-                                        @endif
+                                        @endif -->
 
                                         @if ($item->status != 1 || $item->tgl_akhir_cuti > now() || $item->kategori == null)
                                         @if (Auth::user()->role == '2')

@@ -52,6 +52,9 @@ class User extends Authenticatable
     public function pegawai(){
         return $this->hasMany(Pegawai::class, 'id', 'id_pegawai');
     }
+    public function pegawais(){
+        return $this->hasOne(Pegawai::class, 'id_user', 'id');
+    }
 
     public function cuti(){
         return $this->hasMany(Cuti::class, 'created_by', 'id');

@@ -10,12 +10,28 @@
                 @csrf
                 <div class="modal-body">
                     <div class="mb-3">
-                        <label for="status" class="required col-form-label">Biodata</label>
-                        <input type="file" name="biodata" id="biodata" class="form-control">
+                        <label for="nama_depan" class="required col-form-label">Nama Depan</label>
+                        <input type="text" name="nama_depan" id="nama_depan" class="form-control" value = "{{Auth::user()->pegawais->nama_depan}}"required>
                     </div>
                     <div class="mb-3">
-                        <label for="name" class="required col-form-label">Nama</label>
-                        <input type="text" name="name" id="name" class="form-control" value="{{old('name', Auth::user()->name )}}" required>
+                        <label for="nama_belakang" class="required col-form-label">Nama Belakang</label>
+                        <input type="text" name="nama_belakang" id="nama_belakang" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="tgl_lahir" class="required col-form-label">Tanggal lahir</label>
+                        <input type="date" name="tgl_lahir" id="tgl_lahir" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="no_hp" class="required col-form-label">No Handphone</label>
+                        <input type="text" name="no_hp" id="no_hp" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="jenis_kelamin" class="required col-form-label">Jenis Kelamin</label>
+                        <input type="text" name="jenis_kelamin" id="jenis_kelamin" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="alamat" class="required col-form-label">Alamat</label>
+                        <input type="text" name="alamat" id="alamat" class="form-control" required>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -63,7 +79,7 @@
                             confirmButton: 'btn btn-success',
                         },
                         title: 'Errors',
-                        text: "Gagal mengganti biodata, pastikan file yang dipilih berupa gambar!",
+                        text: "Gagal mengganti biodata",
                         icon: 'error',
                         confirmButtonText: 'OK'
                     }).then((hasil) => {

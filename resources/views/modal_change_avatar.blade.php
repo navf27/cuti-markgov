@@ -15,8 +15,8 @@
                     </div>
                     <div class="mb-3">
                         <label for="name" class="required col-form-label">Nama</label>
-                        <input type="text" name="name" id="name" class="form-control" value="{{old('name', Auth::user()->name )}}" required>
-                    </div>
+                        <input type="text" name="name" id="name" class="form-control" value="{{old('name', Auth::user()->name )}}"> 
+                    </div> 
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
